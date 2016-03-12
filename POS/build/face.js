@@ -15,10 +15,9 @@ var count = 0;
 var gender = [0, 0];
 var mood = [0, 0];
 function success(result) {
-
   if (result.persons.length > 0) {
+    age = (age * count + result.persons[0].age.value) / (count + 1);
     count += 1;
-    age = (age * count - 1 + result.persons[0].age.value) / count;
     if (gender[1] < result.persons[0].gender.confidence) {
       gender = [result.persons[0].gender.value, result.persons[0].gender.confidence];
     }
@@ -29,7 +28,8 @@ function success(result) {
     for (var exp in result.persons[0].expressions) {
       expressions[exp] = result.persons[0].expressions[exp].value;
     }
-    console.log("gender :" + age);
+    // console.log("snapshot age :" + result.persons[0].age.value);
+    // console.log("average age :" +  age + "count: " + count);
     // return {
     //   age: age,
     //   gender: gender,
@@ -57,7 +57,7 @@ function startCapture() {
   setTimeout(function () {
     FACE.webcam.takePicture("webcam_preview", "img_snapshot");
     sendDetectRequest();
-  }, 1000);
+  }, 4000);
 }
 
 // Trigger the start
