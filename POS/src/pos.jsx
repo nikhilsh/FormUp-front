@@ -18,15 +18,15 @@ var POSystem = React.createClass({
         purchased: {},
         items: [
           {name: "Apple",
-            price: 2},
+            price: 1},
           {name: "Orange",
-            price: 3},
+            price: 1.5},
           {name: "Banana",
-            price: 4},
+            price: 2},
           {name: "Tomato",
-            price: 10},
+            price: 0.5},
           {name: "Bratwurst",
-            price: .5},],
+            price: 5},],
       };
   },
   itemClick: function(itemIndex){
