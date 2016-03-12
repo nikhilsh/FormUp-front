@@ -8,18 +8,18 @@ var FACE = ( function() {
   var K_FORM_APP_KEY_FIELD_NAME   = "app_key";
   var K_FORM_ATTRIBUTE_FIELD_NAME = "attribute";
 
-  sendForm = function( formData, onSuccessCallback, onFailureCallback ) {
+  var sendForm = function( formData, onSuccessCallback, onFailureCallback ) {
     var ajaxRequest = new XMLHttpRequest();
     ajaxRequest.open( "POST", K_SERVICE_URL, true );
     ajaxRequest.onreadystatechange = ( function( tmpEvent ) {
       console.log( "FACE request completed. Response text : " + ajaxRequest.responseText );
       if( ajaxRequest.status == 200 ) {
-        jsonResponse = JSON.parse( ajaxRequest.responseText );
+        var jsonResponse = JSON.parse( ajaxRequest.responseText );
         if( jsonResponse.error_code && onFailureCallback ) {
           onFailureCallback( "F.A.C.E. request failed : " + jsonResponse.description );
         } else if( onSuccessCallback ) {
-        // Successfull transaction
-          console.log( "FACE successfull request" );
+        // Successful transaction
+          console.log( "FACE successful request" );
           onSuccessCallback( JSON.parse( ajaxRequest.responseText ) );
         }
       } else {
@@ -31,7 +31,7 @@ var FACE = ( function() {
     } );
     ajaxRequest.send( formData );
     console.log( "FACE Sending request" );
-  }
+  };
 
   return {
     getVersion : function() {
@@ -140,7 +140,7 @@ var FACE = ( function() {
                      context.drawImage( video, 0, 0 );
                      image.src = canvas.toDataURL('image/jpeg');
                    },
-                 }
+                 };
                }() ),
 
     // Util Module
@@ -205,9 +205,9 @@ var FACE = ( function() {
                      tmpImg.onload = function() {
                        context.drawImage( tmpImg, 0, 0, width, height );
                        context.canvas.toBlob( function( blob ) { callback( blob ); }, 'image/jpeg' );
-                     }
+                     };
                      tmpImg.src = data;
-                   }
+                   };
                    FACE.util.readFileAsBase64( img, readImgCallback );
                    return true;
                  },
@@ -247,17 +247,17 @@ var FACE = ( function() {
                    imgTag = document.getElementById( imgTagID );
                    if( callback )
                      imgTag.onload = callback();
-                   FACE.util.readFileAsBase64( imgFile, function( imgData ){ imgTag.src = imgData } );
+                   FACE.util.readFileAsBase64( imgFile, function( imgData ){ imgTag.src = imgData;});
                  },
 
                  // resizeImageIfNeeded()
                  resizeImageIfNeeded : function( img, callback ) {
                    // TODO : Diego : Implement
                  },
-               } 
+               };
 
              }() ), // End util
 
-  } 
+  };
 
 }() );

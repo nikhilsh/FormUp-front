@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var POSystem = React.createClass({
   displayName: "POSystem",
@@ -53,7 +53,8 @@ var SaleItems = React.createClass({
     return React.createElement(
       "div",
       null,
-      itemRows
+      itemRows,
+      React.createElement("video", { id: "webcam_preview", autoplay: true })
     );
   },
   getInitialState: function getInitialState() {

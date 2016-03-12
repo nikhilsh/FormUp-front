@@ -1,3 +1,4 @@
+'use strict';
 var POSystem = React.createClass({
   render: function(){
     return (
@@ -47,7 +48,7 @@ var SaleItems = React.createClass({
         <div className="pure-g item-row">
             {indivItems}
         </div>);
-    return (<div>{itemRows}</div>);
+    return (<div>{itemRows}<video id="webcam_preview" autoplay></video></div>);
   },
   getInitialState: function(){
     return {
