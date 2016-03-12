@@ -94,7 +94,8 @@ var IndivItem = React.createClass({
       );
   },
   handleClick: function(){
-    this.props.itemClick(this.props.itemIndex);
+    if (this.props.itemClick)
+      this.props.itemClick(this.props.itemIndex);
   },
 });
 
@@ -102,15 +103,26 @@ var SaleBar = React.createClass({
   render: function(){
     var itemEntries = [];
     for (var key in this.props.purchased){
-      itemEntries.push(<ItemEntry items={this.props.items} purchased={this.props.purchased}/>);
+      itemEntries.push(<ItemEntry items={this.props.items} purchased={this.props.purchased} itemKey={key}/>);
     }
     var total = 0;
     for (var key in this.props.purchased){
       total += this.props.items[key].price * this.props.purchased[key]
     }
     return (
-      <div>
+      <div id="sale-bar">
         <h1> Total: ${total} </h1>
+        <div className="pure-g">
+          <div className="pure-u-1-5">
+            <h3>Item Name</h3>
+          </div>
+          <div className="pure-u-1-5">
+            <h3>Quantity</h3>
+          </div>
+          <div className="pure-u-1-5">
+            <h3>Total Price</h3>
+          </div>
+        </div>
         {itemEntries}
       </div>
     );
@@ -119,19 +131,21 @@ var SaleBar = React.createClass({
 
 var ItemEntry = React.createClass({
   render: function(){
-    return (<div key={key}>
+    var key = this.props.itemKey;
+    return (
+    <div key={key}>
       <div className="pure-g">
         <div className="pure-u-1-5">
           {this.props.items[key].name}
         </div>
-        <div className="pure-u-3-5">
+        <div className="pure-u-1-5">
           {this.props.purchased[key]}
         </div>
         <div className="pure-u-1-5">
-          {this.props.items[key].name}
+          ${this.props.purchased[key] * this.props.items[key].price}
         </div>
       </div>
-      ${this.props.purchased[key] * this.props.items[key].price}</div>);
+    </div>);
   }
 });
 
