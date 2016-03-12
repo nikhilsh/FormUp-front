@@ -9,19 +9,26 @@ var ajaxRequest = new XMLHttpRequest();
 var shouldSendRequest = true;
 
 var requestInterval;
-
+var age = 0;
+var count = 0;
+var gender = [0,0];
+var mood = [0,0];
 function success( result ) {
-
   if( result.persons.length > 0 ) {
-    var age        = result.persons[0].age.value;
-    var gender     = result.persons[0].gender.value;
-    var mood       = result.persons[0].mood.value;
-
+    age = ((age * count) + result.persons[0].age.value)/(count+1);
+    count += 1;
+    if (gender[1] < result.persons[0].gender.confidence) {
+      gender    = [result.persons[0].gender.value, result.persons[0].gender.confidence];
+    } 
+    if (mood[1] < result.persons[0].mood.confidence) {
+          mood       = [result.persons[0].mood.value, result.persons[0].mood.confidence];
+    }
     let expressions = {}
     for (let exp in result.persons[0].expressions) {
       expressions[exp] = result.persons[0].expressions[exp].value
     }
-
+    // console.log("snapshot age :" + result.persons[0].age.value);
+    // console.log("average age :" +  age + "count: " + count);
     // return {
     //   age: age,
     //   gender: gender,
@@ -44,21 +51,22 @@ function sendDetectRequest() {
   FACE.sendImage( imgBlob, success, failure, app_key, client_id, 'age,gender,mood,expressions' );
 }
 
-
 function startCapture() {
-  FACE.webcam.startPlaying( "webcam_preview" );
+  // FACE.webcam.startPlaying( "webcam_preview" );
   setTimeout( function () {
     FACE.webcam.takePicture( "webcam_preview", "img_snapshot" );
     sendDetectRequest();
-  }, 5000);
+  }, 4000);
 }
-
 
 // Trigger the start
 $( document ).ready( function() {
   if( client_id =='' ) {
     alert( 'Please specify your keys in the source' );
   } else {
-    startCapture();
+    FACE.webcam.startPlaying( "webcam_preview" );
+    setInterval(function(){ 
+      startCapture();
+    }, 4000);
   }
 });
