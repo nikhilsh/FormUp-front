@@ -93,7 +93,7 @@ var IndivItem = React.createClass({
     );
   },
   handleClick: function handleClick() {
-    this.props.itemClick(this.props.itemIndex);
+    if (this.props.itemClick) this.props.itemClick(this.props.itemIndex);
   }
 });
 
@@ -103,7 +103,7 @@ var SaleBar = React.createClass({
   render: function render() {
     var itemEntries = [];
     for (var key in this.props.purchased) {
-      itemEntries.push(React.createElement(ItemEntry, { items: this.props.items, purchased: this.props.purchased }));
+      itemEntries.push(React.createElement(ItemEntry, { items: this.props.items, purchased: this.props.purchased, itemKey: key }));
     }
     var total = 0;
     for (var key in this.props.purchased) {
@@ -111,13 +111,44 @@ var SaleBar = React.createClass({
     }
     return React.createElement(
       "div",
-      null,
+      { id: "sale-bar" },
       React.createElement(
         "h1",
         null,
         " Total: $",
         total,
         " "
+      ),
+      React.createElement(
+        "div",
+        { className: "pure-g" },
+        React.createElement(
+          "div",
+          { className: "pure-u-1-5" },
+          React.createElement(
+            "h3",
+            null,
+            "Item Name"
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "pure-u-1-5" },
+          React.createElement(
+            "h3",
+            null,
+            "Quantity"
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "pure-u-1-5" },
+          React.createElement(
+            "h3",
+            null,
+            "Total Price"
+          )
+        )
       ),
       itemEntries
     );
@@ -128,6 +159,7 @@ var ItemEntry = React.createClass({
   displayName: "ItemEntry",
 
   render: function render() {
+    var key = this.props.itemKey;
     return React.createElement(
       "div",
       { key: key },
@@ -141,17 +173,16 @@ var ItemEntry = React.createClass({
         ),
         React.createElement(
           "div",
-          { className: "pure-u-3-5" },
+          { className: "pure-u-1-5" },
           this.props.purchased[key]
         ),
         React.createElement(
           "div",
           { className: "pure-u-1-5" },
-          this.props.items[key].name
+          "$",
+          this.props.purchased[key] * this.props.items[key].price
         )
-      ),
-      "$",
-      this.props.purchased[key] * this.props.items[key].price
+      )
     );
   }
 });
