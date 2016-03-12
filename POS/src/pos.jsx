@@ -3,7 +3,7 @@ var POSystem = React.createClass({
     return (
       <div className="pure-g">
       <div className="pure-u-7-12">
-        <SaleItems rows={this.state.rows} itemClick={this.itemClick} items={this.state.items}/>
+        <SaleItems itemClick={this.itemClick} items={this.state.items}/>
       </div>
       <div className="pure-u-5-12">
         <SaleBar items={this.state.items} purchased={this.state.purchased}/>
@@ -13,7 +13,6 @@ var POSystem = React.createClass({
   },
   getInitialState: function(){
       return {
-        rows: 5,
         purchased: {},
         items: [
           {name: "Apple",
@@ -41,18 +40,13 @@ var POSystem = React.createClass({
 var SaleItems = React.createClass({
   render: function(){
     var itemRows = [];
-    for(var i = 0; i < this.props.rows; i++){
       var indivItems = [];
       for (var j = 0; j < 5; j++)
-        if (i == 0)
           indivItems.push(<IndivItem itemIndex={j} itemClick={this.props.itemClick} items={this.props.items}/>);
-        else
-          indivItems.push(<IndivItem/>);
       itemRows.push(
-        <div className="pure-g item-row" key={i}>
+        <div className="pure-g item-row">
             {indivItems}
         </div>);
-    }
     return (<div>{itemRows}</div>);
   },
   getInitialState: function(){

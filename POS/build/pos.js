@@ -10,7 +10,7 @@ var POSystem = React.createClass({
       React.createElement(
         "div",
         { className: "pure-u-7-12" },
-        React.createElement(SaleItems, { rows: this.state.rows, itemClick: this.itemClick, items: this.state.items })
+        React.createElement(SaleItems, { itemClick: this.itemClick, items: this.state.items })
       ),
       React.createElement(
         "div",
@@ -21,7 +21,6 @@ var POSystem = React.createClass({
   },
   getInitialState: function getInitialState() {
     return {
-      rows: 5,
       purchased: {},
       items: [{ name: "Apple",
         price: 2 }, { name: "Orange",
@@ -43,16 +42,14 @@ var SaleItems = React.createClass({
 
   render: function render() {
     var itemRows = [];
-    for (var i = 0; i < this.props.rows; i++) {
-      var indivItems = [];
-      for (var j = 0; j < 5; j++) {
-        if (i == 0) indivItems.push(React.createElement(IndivItem, { itemIndex: j, itemClick: this.props.itemClick, items: this.props.items }));else indivItems.push(React.createElement(IndivItem, null));
-      }itemRows.push(React.createElement(
-        "div",
-        { className: "pure-g item-row", key: i },
-        indivItems
-      ));
-    }
+    var indivItems = [];
+    for (var j = 0; j < 5; j++) {
+      indivItems.push(React.createElement(IndivItem, { itemIndex: j, itemClick: this.props.itemClick, items: this.props.items }));
+    }itemRows.push(React.createElement(
+      "div",
+      { className: "pure-g item-row" },
+      indivItems
+    ));
     return React.createElement(
       "div",
       null,
