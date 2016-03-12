@@ -24,6 +24,34 @@ body{
   box-shadow: 0px 0px 3px 3px #E2E2E2;
 }
 
+#interval-button{
+  height: 4em;
+  width: 4em;
+  color: white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0px 0px 3px 3px #E2E2E2;  
+}
+
+#interval-button.clear{
+  background-color: red;
+}
+
+#interval-button.set{
+  background-color: green;
+}
+
+#interval-button.clear:after{
+  content: "Stop";
+}
+
+#interval-button.set:after{
+  content: "Start";
+}
+
 .left-button-body{
   padding: 1em;
   box-sizing: border-box;

@@ -20,7 +20,8 @@ var POSystem = React.createClass({
           "div",
           { id: "post-button", onClick: this.postState },
           "Submit"
-        )
+        ),
+        React.createElement("div", { id: "interval-button", className: "clear" })
       )
     );
   },

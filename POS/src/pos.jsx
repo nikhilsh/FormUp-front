@@ -9,6 +9,7 @@ var POSystem = React.createClass({
           <div className="pure-u-9-24 right-side-bar">
             <SaleBar items={this.state.items} purchased={this.state.purchased}/>
             <div id="post-button" onClick={this.postState}>Submit</div>
+            <div id="interval-button" className="clear"/>
           </div>
         </div>
     );

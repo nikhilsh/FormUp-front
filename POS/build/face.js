@@ -65,14 +65,26 @@ function startCapture() {
   }, 4000);
 }
 
+function setCaptureInterval() {
+  return setInterval(function () {
+    startCapture();
+  }, 4000);
+}
 // Trigger the start
 $(document).ready(function () {
   if (client_id === '') {
     alert('Please specify your keys in the source');
   } else {
     FACE.webcam.startPlaying("webcam_preview");
-    setInterval(function () {
-      startCapture();
-    }, 4000);
+    var captureInterval = setCaptureInterval();
+    var clearOrSet = false; //false to clear
+
+    $("#interval-button").click(function () {
+
+      if (!clearOrSet) clearInterval(captureInterval);else captureInterval = setCaptureInterval();
+      clearOrSet = !clearOrSet;
+      $(this).toggleClass("clear");
+      $(this).toggleClass("set");
+    });
   }
 });
