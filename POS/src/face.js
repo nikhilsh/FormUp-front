@@ -13,6 +13,7 @@ var age = 0;
 var count = 0;
 var gender = [0,0];
 var mood = [0,0];
+var expressions = {};
 function success( result ) {
   if( result.persons.length > 0 ) {
     age = ((age * count) + result.persons[0].age.value)/(count+1);
@@ -23,19 +24,23 @@ function success( result ) {
     if (mood[1] < result.persons[0].mood.confidence) {
           mood       = [result.persons[0].mood.value, result.persons[0].mood.confidence];
     }
-    let expressions = {}
     for (let exp in result.persons[0].expressions) {
       expressions[exp] = result.persons[0].expressions[exp].value
     }
+
     // console.log("snapshot age :" + result.persons[0].age.value);
     // console.log("average age :" +  age + "count: " + count);
-    // return {
-    //   age: age,
-    //   gender: gender,
-    //   mood: mood,
-    //   expressions: expressions
-    // }
-  }
+  };
+}
+
+function getData() {
+  var data =  {
+    "mood" : mood[1] > 50 ? 1 : 0,
+    "gender" : gender[0],
+    "age" : age,
+    "expression" : expressions
+  };
+  console.log(JSON.stringify(data));
 }
 
 function failure( error ) {}

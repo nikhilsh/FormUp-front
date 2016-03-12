@@ -29,11 +29,11 @@ var POSystem = React.createClass({
       purchased: {},
       customer: {},
       items: [{ name: "Apple",
-        price: 2 }, { name: "Orange",
-        price: 3 }, { name: "Banana",
-        price: 4 }, { name: "Tomato",
-        price: 10 }, { name: "Bratwurst",
-        price: .5 }]
+        price: 1 }, { name: "Orange",
+        price: 1.5 }, { name: "Banana",
+        price: 2 }, { name: "Tomato",
+        price: 0.5 }, { name: "Bratwurst",
+        price: 5 }]
     };
   },
   itemClick: function itemClick(itemIndex) {
