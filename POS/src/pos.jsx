@@ -47,18 +47,18 @@ var POSystem = React.createClass({
       var itemName = this.state.items[purchaseKey].name.toLowerCase();
       requestBody.item[itemName] = this.state.purchased[purchaseKey];
     }
-
+    var self = this;
     $.ajax({
       type: "POST",
       url: "http://localhost:4005/sales",
-      dataType: "json",
       data: JSON.stringify(requestBody),
       contentType: "application/json",
       success: function(data, status){
-        if (!(status == 200))
-          console.log("Error: " + status + " " + data);
-        else
           console.log(data);
+          self.setState(self.getInitialState());
+      },
+      error: function(data, status){
+        console.log("Error: " + status + " " + JSON.stringify(data));
       },
     });
   }
@@ -80,9 +80,6 @@ var SaleItems = React.createClass({
     return {
       items: []
     };
-  },
-  addItem: function(item){
-
   },
 });
 
