@@ -1,0 +1,12 @@
+.indiv-item{
+  height: 8em;
+  width: 8em;
+  border: 1px gray solid;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.item-row{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
