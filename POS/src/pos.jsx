@@ -2,19 +2,21 @@
 var POSystem = React.createClass({
   render: function(){
     return (
-      <div className="pure-g">
-      <div className="pure-u-7-12">
-        <SaleItems itemClick={this.itemClick} items={this.state.items}/>
-      </div>
-      <div className="pure-u-5-12">
-        <SaleBar items={this.state.items} purchased={this.state.purchased}/>
+        <div className="pure-g">
+          <div className="pure-u-7-12 left-button-body">
+            <SaleItems itemClick={this.itemClick} items={this.state.items}/>
+          </div>
+          <div className="pure-u-9-24 right-side-bar">
+            <SaleBar items={this.state.items} purchased={this.state.purchased}/>
+            <div id="post-button" onClick={this.postState}>Submit</div>
+          </div>
         </div>
-      </div>
     );
   },
   getInitialState: function(){
       return {
         purchased: {},
+        customer: {},
         items: [
           {name: "Apple",
             price: 2},
@@ -35,6 +37,30 @@ var POSystem = React.createClass({
     else
       newState.purchased[itemIndex] = 1
     this.setState(newState);
+  },
+  postState: function(){
+    var requestBody = {
+      item: {},
+      buyer: this.state.customer
+    };
+    for (var purchaseKey in this.state.purchased){
+      var itemName = this.state.items[purchaseKey].name.toLowerCase();
+      requestBody.item[itemName] = this.state.purchased[purchaseKey];
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:4005/sales",
+      dataType: "json",
+      data: JSON.stringify(requestBody),
+      contentType: "application/json",
+      success: function(data, status){
+        if (!(status == 200))
+          console.log("Error: " + status + " " + data);
+        else
+          console.log(data);
+      },
+    });
   }
 });
 
@@ -48,7 +74,7 @@ var SaleItems = React.createClass({
         <div className="pure-g item-row">
             {indivItems}
         </div>);
-    return (<div>{itemRows}<video id="webcam_preview" autoplay></video></div>);
+    return (<div>{itemRows}<video id="webcam_preview" className="face-hidden" autoplay></video></div>);
   },
   getInitialState: function(){
     return {
@@ -74,7 +100,10 @@ var IndivItem = React.createClass({
 
     return (
       <div className="pure-u-1-5">
-        <div className="indiv-item" onClick={this.handleClick}>{name}{name ? ", $" : ""}{price}</div>
+        <div className="indiv-item" onClick={this.handleClick}>
+          <h3>{name}</h3>
+          <p>${price}</p>
+        </div>
       </div>
       );
   },
@@ -99,7 +128,7 @@ var SaleBar = React.createClass({
         <h1> Total: ${total} </h1>
         <div className="pure-g">
           <div className="pure-u-1-5">
-            <h3>Item Name</h3>
+            <h3>Name</h3>
           </div>
           <div className="pure-u-1-5">
             <h3>Quantity</h3>
@@ -108,7 +137,9 @@ var SaleBar = React.createClass({
             <h3>Total Price</h3>
           </div>
         </div>
-        {itemEntries}
+        <ul className="sale-bar-items">
+          {itemEntries}
+        </ul>
       </div>
     );
   }
@@ -118,7 +149,7 @@ var ItemEntry = React.createClass({
   render: function(){
     var key = this.props.itemKey;
     return (
-    <div key={key}>
+    <li key={key}>
       <div className="pure-g">
         <div className="pure-u-1-5">
           {this.props.items[key].name}
@@ -130,7 +161,7 @@ var ItemEntry = React.createClass({
           ${this.props.purchased[key] * this.props.items[key].price}
         </div>
       </div>
-    </div>);
+    </li>);
   }
 });
 

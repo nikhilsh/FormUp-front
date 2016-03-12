@@ -9,19 +9,25 @@ var POSystem = React.createClass({
       { className: "pure-g" },
       React.createElement(
         "div",
-        { className: "pure-u-7-12" },
+        { className: "pure-u-7-12 left-button-body" },
         React.createElement(SaleItems, { itemClick: this.itemClick, items: this.state.items })
       ),
       React.createElement(
         "div",
-        { className: "pure-u-5-12" },
-        React.createElement(SaleBar, { items: this.state.items, purchased: this.state.purchased })
+        { className: "pure-u-9-24 right-side-bar" },
+        React.createElement(SaleBar, { items: this.state.items, purchased: this.state.purchased }),
+        React.createElement(
+          "div",
+          { id: "post-button", onClick: this.postState },
+          "Submit"
+        )
       )
     );
   },
   getInitialState: function getInitialState() {
     return {
       purchased: {},
+      customer: {},
       items: [{ name: "Apple",
         price: 2 }, { name: "Orange",
         price: 3 }, { name: "Banana",
@@ -34,6 +40,27 @@ var POSystem = React.createClass({
     var newState = this.state;
     if (itemIndex in newState.purchased) newState.purchased[itemIndex] += 1;else newState.purchased[itemIndex] = 1;
     this.setState(newState);
+  },
+  postState: function postState() {
+    var requestBody = {
+      item: {},
+      buyer: this.state.customer
+    };
+    for (var purchaseKey in this.state.purchased) {
+      var itemName = this.state.items[purchaseKey].name.toLowerCase();
+      requestBody.item[itemName] = this.state.purchased[purchaseKey];
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:4005/sales",
+      dataType: "json",
+      data: JSON.stringify(requestBody),
+      contentType: "application/json",
+      success: function success(data, status) {
+        if (!(status == 200)) console.log("Error: " + status + " " + data);else console.log(data);
+      }
+    });
   }
 });
 
@@ -54,7 +81,7 @@ var SaleItems = React.createClass({
       "div",
       null,
       itemRows,
-      React.createElement("video", { id: "webcam_preview", autoplay: true })
+      React.createElement("video", { id: "webcam_preview", className: "face-hidden", autoplay: true })
     );
   },
   getInitialState: function getInitialState() {
@@ -84,9 +111,17 @@ var IndivItem = React.createClass({
       React.createElement(
         "div",
         { className: "indiv-item", onClick: this.handleClick },
-        name,
-        name ? ", $" : "",
-        price
+        React.createElement(
+          "h3",
+          null,
+          name
+        ),
+        React.createElement(
+          "p",
+          null,
+          "$",
+          price
+        )
       )
     );
   },
@@ -126,7 +161,7 @@ var SaleBar = React.createClass({
           React.createElement(
             "h3",
             null,
-            "Item Name"
+            "Name"
           )
         ),
         React.createElement(
@@ -148,7 +183,11 @@ var SaleBar = React.createClass({
           )
         )
       ),
-      itemEntries
+      React.createElement(
+        "ul",
+        { className: "sale-bar-items" },
+        itemEntries
+      )
     );
   }
 });
@@ -159,7 +198,7 @@ var ItemEntry = React.createClass({
   render: function render() {
     var key = this.props.itemKey;
     return React.createElement(
-      "div",
+      "li",
       { key: key },
       React.createElement(
         "div",
