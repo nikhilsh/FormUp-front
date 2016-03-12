@@ -60,8 +60,8 @@ function startCapture() {
 }
 
 // Trigger the start
-$( document ).ready( function() {
-  if( client_id =='' ) {
+$(document).ready( function() {
+  if( client_id === '' ) {
     alert( 'Please specify your keys in the source' );
   } else {
     FACE.webcam.startPlaying( "webcam_preview" );

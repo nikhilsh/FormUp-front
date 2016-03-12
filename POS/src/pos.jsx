@@ -16,7 +16,6 @@ var POSystem = React.createClass({
   getInitialState: function(){
       return {
         purchased: {},
-        customer: {},
         items: [
           {name: "Apple",
             price: 2},
@@ -39,10 +38,23 @@ var POSystem = React.createClass({
     this.setState(newState);
   },
   postState: function(){
+    if (window.FACE){
+      var buyer = {
+        age: age,
+        gender: gender[0],
+        mood: mood[0],
+      };
+      console.log(buyer);
+    }
+    else{
+      var buyer = {}
+    }
+    
     var requestBody = {
       item: {},
-      buyer: this.state.customer
+      buyer: buyer
     };
+
     for (var purchaseKey in this.state.purchased){
       var itemName = this.state.items[purchaseKey].name.toLowerCase();
       requestBody.item[itemName] = this.state.purchased[purchaseKey];
